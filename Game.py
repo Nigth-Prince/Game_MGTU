@@ -31,18 +31,15 @@ for img in car_list:
      
 def draw_text(surf, text, x, y, size=FONT_SIZE, color=WHITE):
     font = pg.font.Font(font_name, size)
-    text_surface = font.render(text, True, color)
     text_surface = font.render(text, True, color) 
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
-    surf.blit(text_surface, text_rect)
     surf.blit(text_surface, text_rect) 
 
 
-def user_name(surf, text, x, y, size=FONT_SIZE):
+def user_name(surf, text, x, y, size=FONT_SIZE): 
     font = pg.font.Font(font_name, size)
     text_surface = font.render(text, True, WHITE)
-    text_rect = text_surface.get_rect()
     text_rect = text_surface.get_rect() 
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
@@ -53,23 +50,17 @@ class Player(pg.sprite.Sprite):
         self.image = pg.transform.scale(player_img, (120, 150))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH / 2
-        self.rect.bottom = HEIGHT - 10
-        self.speedx = 0
-        self.speedy = 0 
+        self.rect.centerx = WIDTH / 2 
+        self.rect.bottom = HEIGHT - 10 
 
     def update(self):
-        self.speedx = 0
         self.speedx = 0 
         self.speedy = 0
         keystate = pg.key.get_pressed()
-        if keystate[pg.K_LEFT]:
         if keystate[pg.K_LEFT]: 
             self.speedx = -8
-        if keystate[pg.K_RIGHT]:
         if keystate[pg.K_RIGHT]: 
             self.speedx = 8
-        self.rect.x += self.speedx 
         self.rect.x += self.speedx
         if self.rect.right > WIDTH + 31:
             self.rect.right = WIDTH + 31
@@ -84,7 +75,6 @@ class Player(pg.sprite.Sprite):
             self.rect.top = -10
         if self.rect.bottom > HEIGHT + 13:
             self.rect.bottom = HEIGHT + 13
-class Mob(pg.sprite.Sprite):
 class Mob(pg.sprite.Sprite): 
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
@@ -94,23 +84,10 @@ class Mob(pg.sprite.Sprite):
         self.image = self.image_orig 
         self.rect = self.image.get_rect()
         self.rect.x = random.choice(r)
-        self.rect.y = random.randrange(-150, -100, 50)
+        self.rect.y = random.randrange(-150, -100) 
         self.speedy = 10
-        self.rot = 0
-        self.rot_speed = 10
-        self.last_update = pg.time.get_ticks()
-
-    def rotate(self):
-        now = pg.time.get_ticks()
-        if now - self.last_update > 50:
-            self.last_update = now
-            self.rot = (self.rot + self.rot_speed) % 360 
-            old_center = self.rect.center
-            self.rect = self.image.get_rect() 
-            self.rect.center = old_center
 
     def update(self):
-        self.rotate()
         self.rect.y += 10
        
 class Heart(pg.sprite.Sprite):
@@ -119,11 +96,8 @@ class Heart(pg.sprite.Sprite):
         self.image = pg.transform.scale(heart, (40, 40))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.x = x
         self.rect.x = x 
         self.rect.y = y
-for img in car_list:
-    car_png.append(pg.image.load(path.join(img_dir, img)).convert())
 
 all_sprites = pg.sprite.Group()
 mobs = pg.sprite.Group() 
@@ -131,29 +105,21 @@ hearts = []
 player = Player() 
 all_sprites.add(player) 
 for i in range(3):
-    h = Heart(i * 50, HEIGHT - 600) 
     h = Heart(i * 50, HEIGHT - 600)
     all_sprites.add(h)
     hearts.append(h)
 
 def update_game_screen(name: str, score: int):
-    screen.fill(DARK_GREY)  
     screen.fill(DARK_GREY) 
     for i in range(6):
         pg.draw.line(screen , WHITE ,[WIDTH/5*i , - HEIGHT], [WIDTH/5*i , HEIGHT], 4)
     all_sprites.draw(screen)
-    draw_text(screen, str(score), (WIDTH / 2) + 30, 10)
     draw_text(screen, str(score), (WIDTH / 2) + 30, 10) 
     user_name(screen, str(name), (WIDTH / 3) + 30, 10)
     pg.display.flip()  
 
 def run_game_loop(name: str):
     amount_of_life = 3
-    running, score, i = True, 0, 0  
-    while amount_of_life > 0 and running:  
-        clock.tick(FPS) 
-        speedscore = 1
-        score += speedscore
     running, score, i = True, 0, 0 
     while amount_of_life > 0 and running:
         clock.tick(FPS)
@@ -161,11 +127,9 @@ def run_game_loop(name: str):
         for event in pg.event.get():  
             if event.type == pg.QUIT:
                 running = False
-            elif event.type == pg.KEYDOWN:
-                if event.key == pg.K_ESCAPE:
+            elif event.key == pg.K_ESCAPE:
                     running = False
         i += 1
-        if i > 16:
         if i > 19:
                 i = 0
                 m = Mob()
@@ -188,11 +152,10 @@ def run_game_loop(name: str):
 
 
 def init_score_screen():
-    name, score = '', 0
-    is_run = True
+    name, is_run = '', True
     while is_run:
         for event in pg.event.get():
-            if event.type == pg.QUIT: 
+            if event.type == pg.QUIT:
                 is_run = False
             elif event.type == pg.KEYDOWN:
                 if event.key in {pg.K_ESCAPE, pg.K_RETURN}:
@@ -208,7 +171,7 @@ def init_score_screen():
         draw_text(screen, name, WIDTH // 2 , HEIGHT // 2 + 20)
         pg.display.flip()
 
-    score = run_game_loop(name=name)
+    run_game_loop(name=name)
 
     return name
 
@@ -221,12 +184,11 @@ def score_game():
 def top_gamers():
     offset = 0 
     for u_name, u_score in db.get():
-        draw_text(screen, (f'{u_name}: {u_score}'), WIDTH // 2, HEIGHT - 150 - offset)
+        draw_text(screen, (f'{u_name}: {u_score}'), WIDTH // 2, HEIGHT - 200 - offset)
         offset -= 30
 
 game_over_loop = True
 while game_over_loop:
-        clock.tick(FPS)
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 game_over_loop = False
@@ -234,17 +196,11 @@ while game_over_loop:
                 if event.key in {pg.K_ESCAPE, pg.K_RETURN}:
                     game_over_loop = False
 
-
         screen.fill(BLACK)
         draw_text(screen, 'Game Over', WIDTH // 2, HEIGHT - 450)
-        draw_text(screen, score_game(), WIDTH // 2, HEIGHT // 2)
-        draw_text(screen, 'Best scores:', WIDTH // 2, HEIGHT - 200)
-        top_gamers()  
+        draw_text(screen, score_game(), WIDTH // 2, HEIGHT // 2) 
+        draw_text(screen, 'Best scores:', WIDTH // 2, HEIGHT - 250)
+        top_gamers()
         pg.display.flip()
 
-
-
 pg.quit()
-
-print('Game Over')
-
