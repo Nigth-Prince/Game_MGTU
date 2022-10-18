@@ -25,19 +25,25 @@ player_img = pg.image.load(path.join(img_dir, "Player_car.png")).convert()
 car_png = []
 car_list = ["G_car.png", "W_car.png","Gr_car.png"]
 
+for img in car_list:
+    car_png.append(pg.image.load(path.join(img_dir, img)).convert())
+
      
 def draw_text(surf, text, x, y, size=FONT_SIZE, color=WHITE):
     font = pg.font.Font(font_name, size)
     text_surface = font.render(text, True, color)
+    text_surface = font.render(text, True, color) 
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
+    surf.blit(text_surface, text_rect) 
 
 
 def user_name(surf, text, x, y, size=FONT_SIZE):
     font = pg.font.Font(font_name, size)
     text_surface = font.render(text, True, WHITE)
     text_rect = text_surface.get_rect()
+    text_rect = text_surface.get_rect() 
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
 
@@ -54,13 +60,17 @@ class Player(pg.sprite.Sprite):
 
     def update(self):
         self.speedx = 0
+        self.speedx = 0 
         self.speedy = 0
         keystate = pg.key.get_pressed()
         if keystate[pg.K_LEFT]:
+        if keystate[pg.K_LEFT]: 
             self.speedx = -8
         if keystate[pg.K_RIGHT]:
+        if keystate[pg.K_RIGHT]: 
             self.speedx = 8
         self.rect.x += self.speedx 
+        self.rect.x += self.speedx
         if self.rect.right > WIDTH + 31:
             self.rect.right = WIDTH + 31
         if self.rect.left < -31:
@@ -75,6 +85,7 @@ class Player(pg.sprite.Sprite):
         if self.rect.bottom > HEIGHT + 13:
             self.rect.bottom = HEIGHT + 13
 class Mob(pg.sprite.Sprite):
+class Mob(pg.sprite.Sprite): 
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
         self.image_orig = random.choice(car_png)
@@ -109,6 +120,7 @@ class Heart(pg.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.x = x
+        self.rect.x = x 
         self.rect.y = y
 for img in car_list:
     car_png.append(pg.image.load(path.join(img_dir, img)).convert())
@@ -120,15 +132,18 @@ player = Player()
 all_sprites.add(player) 
 for i in range(3):
     h = Heart(i * 50, HEIGHT - 600) 
+    h = Heart(i * 50, HEIGHT - 600)
     all_sprites.add(h)
     hearts.append(h)
 
 def update_game_screen(name: str, score: int):
     screen.fill(DARK_GREY)  
+    screen.fill(DARK_GREY) 
     for i in range(6):
         pg.draw.line(screen , WHITE ,[WIDTH/5*i , - HEIGHT], [WIDTH/5*i , HEIGHT], 4)
     all_sprites.draw(screen)
     draw_text(screen, str(score), (WIDTH / 2) + 30, 10)
+    draw_text(screen, str(score), (WIDTH / 2) + 30, 10) 
     user_name(screen, str(name), (WIDTH / 3) + 30, 10)
     pg.display.flip()  
 
@@ -139,6 +154,10 @@ def run_game_loop(name: str):
         clock.tick(FPS) 
         speedscore = 1
         score += speedscore
+    running, score, i = True, 0, 0 
+    while amount_of_life > 0 and running:
+        clock.tick(FPS)
+        score += 1
         for event in pg.event.get():  
             if event.type == pg.QUIT:
                 running = False
@@ -147,6 +166,7 @@ def run_game_loop(name: str):
                     running = False
         i += 1
         if i > 16:
+        if i > 19:
                 i = 0
                 m = Mob()
                 all_sprites.add(m)
